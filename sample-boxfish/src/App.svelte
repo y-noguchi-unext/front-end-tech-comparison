@@ -4,10 +4,12 @@
   import Router, { push } from "svelte-spa-router";
   import { Navbar, NavbarBrand, Nav, NavLink } from "sveltestrap";
   import OrderHistory from "./components/history/OrderHistory.svelte";
+import User from "./components/user/User.svelte";
 
   const routes = {
     "/top/": Top,
     "/history/order": OrderHistory,
+    "/user": User,
     "*": Login,
   };
 </script>
@@ -16,7 +18,7 @@
   main {
     padding-top: 60px;
   }
-  
+
   header {
     position: fixed;
     top: 0;
@@ -30,11 +32,11 @@
   <header>
     <Navbar color="dark" dark={true} expand="md">
       <NavbarBrand href="/">BtoBシステム</NavbarBrand>
-      <Nav class="ml-auto" navbar>
+      <Nav navbar>
         <NavLink on:click={() => push('/history/order')} class="text-white">
           発注履歴
         </NavLink>
-        <NavLink href="#" class="text-white">Link</NavLink>
+        <NavLink on:click={() => push('/user')} class="text-white">ユーザー</NavLink>
         <NavLink href="#" class="text-white">Link</NavLink>
       </Nav>
     </Navbar>
