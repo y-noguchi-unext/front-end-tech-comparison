@@ -1,17 +1,28 @@
 <script lang="ts">
+  import { currentUser } from "./store/store";
   import Login from "./components/login/Login.svelte";
   import Top from "./components/top/Top.svelte";
   import Router, { push } from "svelte-spa-router";
   import { Navbar, NavbarBrand, Nav, NavLink } from "sveltestrap";
   import OrderHistory from "./components/history/OrderHistory.svelte";
-import User from "./components/user/User.svelte";
+  import User from "./components/user/User.svelte";
+  import { onMount } from "svelte";
+import Mypage from "./components/mypage/Mypage.svelte";
 
   const routes = {
-    "/top/": Top,
+    "/top": Top,
     "/history/order": OrderHistory,
     "/user": User,
-    "*": Login,
+    "/login": Login,
+    "/mypage": Mypage,
+    "*": Top,
   };
+
+  onMount(() => {
+    if(!$currentUser){
+      push('/login');
+    }
+  });
 </script>
 
 <style>
@@ -29,17 +40,21 @@ import User from "./components/user/User.svelte";
 </style>
 
 <main>
+  {#if $currentUser}
   <header>
     <Navbar color="dark" dark={true} expand="md">
-      <NavbarBrand href="/">BtoBシステム</NavbarBrand>
+      <NavbarBrand href="/#/top" on:click={() => push('/top')}>BtoBシステム</NavbarBrand>
       <Nav navbar>
-        <NavLink on:click={() => push('/history/order')} class="text-white">
+        <NavLink href="/#/history/order" on:click={() => push('/history/order')} class="text-white">
           発注履歴
         </NavLink>
-        <NavLink on:click={() => push('/user')} class="text-white">ユーザー</NavLink>
-        <NavLink href="#" class="text-white">Link</NavLink>
+        <NavLink href="/#/user" on:click={() => push('/user')} class="text-white">
+          ユーザー
+        </NavLink>
+        <NavLink href="/#/mypage" on:click={() => push('/mypage')} class="text-white">マイページ</NavLink>
       </Nav>
     </Navbar>
   </header>
+  {/if}
   <Router {routes} />
 </main>
