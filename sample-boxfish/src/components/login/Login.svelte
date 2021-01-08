@@ -3,12 +3,11 @@
   import { push } from "svelte-spa-router";
   import type { IUser } from "../user/IUser";
   import {currentUser} from "../../store/store";
-import { onMount } from "svelte";
+import { beforeUpdate, onMount } from "svelte";
 
   const fetchUser: () => Promise<IUser> = async () => {
     const response = await fetch(`https://randomuser.me/api/?results=1`);
     const json: IUser = await response.json();
-    console.log(json);
     return json;
   };
 
@@ -22,6 +21,12 @@ import { onMount } from "svelte";
     });
     push("/top");
   };
+
+  beforeUpdate(() => {
+    if ($currentUser) {
+      location.href = "http://localhost:5000/#/top";
+    }
+  });
 </script>
 
 <style>
